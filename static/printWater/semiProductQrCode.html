@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>打印原材料二维码</title>
+  <script src="../../static/lib/jquery.min.js"></script>
+  <object id="LODOP_OB" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0>
+    <embed id="LODOP_EM" type="application/x-print-lodop" width=0 height=0></embed>
+  </object>
+</head>
+<body>
+
+<div id="div" class="warp">
+  <input type="hidden" id="IsPreview" value="1">
+</div>
+
+<script>
+  function getQuery(para) {
+    var reg = new RegExp("(^|&)" + para + "=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) {
+      return unescape(r[2]);
+    }
+    return null;
+  }
+
+  var urlstr = decodeURIComponent(getQuery('qrCodeUrl'));
+  var urls = urlstr.split(',');
+  urls.forEach(function (value, i) {
+    const url = value.split('*')
+    let amount = Math.round(parseFloat(url[1]))
+    if (amount === null || amount === undefined) {
+      amount = 0
+    }
+    for (let j = 0; j < amount; j++) {
+      $("#div").append('<div class="div" id="div' + i + '"><img src="' + url[0] + '"></div>');
+    }
+  })
+</script>
+<script src="LodopFuncs.js"></script>
+<script src="Print.js"></script>
+</body>
+</html>

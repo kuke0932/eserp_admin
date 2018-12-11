@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>打印快递单和水洗标</title>
+</head>
+<style>
+  .main1000{
+    width: 858px;
+    height: auto;
+    margin: 0 auto;
+    border: 1px solid #e6e6e6;
+    /*padding-top: 30px;*/
+    padding-bottom: 30px;
+    color: #606266;
+    font-family: "Microsoft YaHei";
+    overflow: hidden;
+  }
+  .noCloseTip{
+    width: 300px;
+    height: 161px;
+    margin-top: 30px;
+    /*background: #00ff00;*/
+    padding: 0 20px;
+    font-size: 16px;
+    line-height: 32px;
+    margin-bottom: 20px;
+    text-align: center;
+    float: left;
+  }
+  .noCloseTip span{
+    color: #ff0000;
+  }
+  .w460{
+    width: 460px;
+    height: auto;
+    float: left;
+  }
+  .iframes{
+    width: 460px;
+    height: 283px;
+    /*background: #ff0000;*/
+    padding: 0;
+    margin: 0;
+    display: none;
+    /*float: left;*/
+  }
+  .goClearPrint{
+    display: none;
+    border: 0;
+    width: 200px;
+    height: 40px;
+    margin: 0 auto;
+    background: #409eff;
+    color: #ffffff;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+</style>
+<body>
+<div class="main1000">
+  <div id="noCloseTip" class="noCloseTip">
+    <button id="goPrintAll" class="goClearPrint" onclick="">全部打印</button>
+    <br />
+    打印未完成时，<br />请勿<span>关闭</span>该页面或者<span>刷新</span>该页面！<br />
+    如需要关闭页面，<br />请先将打印及队列为空，<br />或者清除打印机队列！
+  </div>
+  <div class="w460">
+    <iframe id="printExpress" class="iframes" src="" frameborder="0"></iframe>
+    <iframe id="printWashMark" class="iframes" src="" frameborder="0"></iframe>
+  </div>
+</div>
+</body>
+<script src="LodopFuncs.js"></script>
+<script>
+  var LodopInstalled = false
+  window.onload = function() {
+    document.getElementById('goPrintAll').disabled = true
+    document.getElementById('goPrintAll').style.opacity = 0.5
+    document.getElementById('goPrintAll').style.cursor = 'not-allowed'
+    function getQueryString(name) {
+      var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i')
+      var r = window.location.search.substr(1).match(reg)
+      if (r != null) {
+        return unescape(r[2])
+      }
+      return null
+    }
+    var LODOP = window.getLodop()
+    if (LODOP) {
+      LodopInstalled = true
+      document.getElementById('goPrintAll').disabled = false
+      document.getElementById('goPrintAll').style.opacity = 1
+      document.getElementById('goPrintAll').style.cursor = 'default'
+    }
+
+    // 这样调用：
+    var printType = getQueryString('printType')
+    console.log(printType)
+    if (printType === '0') {
+      document.getElementById('goPrintAll').style.display = 'block'
+      document.getElementById('noCloseTip').style.marginTop = '180px'
+      document.getElementById('printExpress').style.display = 'block'
+      document.getElementById('printWashMark').style.display = 'block'
+      document.getElementById('printExpress').src = 'printExpress.html'
+      document.getElementById('printWashMark').src = 'printWashMark.html'
+    } else if (printType === '1') {
+      document.getElementById('printExpress').style.display = 'block'
+      document.getElementById('printExpress').src = 'printExpress.html'
+    } else if (printType === '2') {
+      document.getElementById('printWashMark').style.display = 'block'
+      document.getElementById('printWashMark').src = 'printWashMark.html'
+    } else {
+      console.log(1)
+    }
+  }
+</script>
+</html>

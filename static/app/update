@@ -1,0 +1,4 @@
+#/bin/sh
+cd /opt/html/static/app
+ln -sf `ls -lt . | head -n 2 |awk '{if (NR>1){print $9}}'`  worker-stable.apk
+cd -
